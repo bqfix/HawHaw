@@ -12,9 +12,7 @@ import com.example.android.javajokegenerator.JokeGenerator;
 import com.example.android.jokedisplay.JokeDisplayActivity;
 
 
-public class MainActivity extends AppCompatActivity {
-
-    private JokeGenerator mJokeGenerator;
+public class MainActivity extends AppCompatActivity implements JokeAsyncTask.JokeResult {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +43,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //A helper method that displays a toast containing a joke generated from the javaJokeGenerator library
+    //A helper method that displays a joke generated from the javaJokeGenerator library
     public void tellJoke(View v) {
-        if (mJokeGenerator == null) mJokeGenerator = new JokeGenerator();
+        new JokeAsyncTask(this).execute();
+    }
 
-        String joke = mJokeGenerator.getJoke();
+    //Launch the new activity when the AsyncTask returns with a joke
+    @Override
+    public void getJokeResult(String joke) {
         Intent jokeIntent = new Intent(MainActivity.this, JokeDisplayActivity.class);
         jokeIntent.putExtra(JokeDisplayActivity.JOKE_STRING_KEY, joke);
         startActivity(jokeIntent);
     }
-
-
 }

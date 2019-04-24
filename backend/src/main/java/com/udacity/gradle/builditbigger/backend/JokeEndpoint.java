@@ -18,8 +18,8 @@ import javax.inject.Named;
 )
 public class JokeEndpoint {
 
-    @ApiMethod(name = "sayJoke")
-    public JokeBean sayJoke() {
+    @ApiMethod(name = "getJokeBean")
+    public JokeBean getJokeBean() {
         return new JokeBean();
     }
 
