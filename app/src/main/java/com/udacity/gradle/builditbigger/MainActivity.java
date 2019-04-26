@@ -6,18 +6,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.javajokegenerator.JokeGenerator;
 import com.example.android.jokedisplay.JokeDisplayActivity;
 
 
-public class MainActivity extends AppCompatActivity implements JokeAsyncTask.JokeResult {
+public class MainActivity extends AppCompatActivity implements JokeAsyncTask.JokeAsyncPreExecute, JokeAsyncTask.JokeResult {
+
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mProgressBar = (ProgressBar) findViewById(R.id.async_progress_bar);
     }
 
 
@@ -45,12 +50,18 @@ public class MainActivity extends AppCompatActivity implements JokeAsyncTask.Jok
 
     //A helper method that displays a joke returned from the JokeAsyncTask
     public void tellJoke(View v) {
-        new JokeAsyncTask(this).execute();
+        new JokeAsyncTask(this,this).execute();
+    }
+
+    @Override
+    public void performPreExecute() {
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     //Launch the new activity when the AsyncTask returns with a joke
     @Override
     public void getJokeResult(String joke) {
+        mProgressBar.setVisibility(View.GONE);
         Intent jokeIntent = new Intent(MainActivity.this, JokeDisplayActivity.class);
         jokeIntent.putExtra(JokeDisplayActivity.JOKE_STRING_KEY, joke);
         startActivity(jokeIntent);

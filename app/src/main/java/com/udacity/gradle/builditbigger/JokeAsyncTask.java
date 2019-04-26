@@ -12,10 +12,18 @@ import java.io.IOException;
 
 public class JokeAsyncTask extends AsyncTask<Void, Void, String> {
     private static JokeApi mJokeApi = null;
+    private JokeAsyncPreExecute mJokeAsyncPreExecute;
     private JokeResult mJokeResult;
 
-    public JokeAsyncTask(JokeResult jokeResponse){
+    public JokeAsyncTask(JokeAsyncPreExecute jokeAsyncPreExecute, JokeResult jokeResponse){
+        mJokeAsyncPreExecute = jokeAsyncPreExecute;
         mJokeResult = jokeResponse;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mJokeAsyncPreExecute.performPreExecute();
     }
 
     @Override
@@ -48,5 +56,9 @@ public class JokeAsyncTask extends AsyncTask<Void, Void, String> {
 
     public interface JokeResult {
         void getJokeResult(String joke);
+    }
+
+    public interface JokeAsyncPreExecute {
+        void performPreExecute();
     }
 }
