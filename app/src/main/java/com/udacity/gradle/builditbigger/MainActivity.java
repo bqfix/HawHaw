@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements JokeAsyncTask.Jok
         return super.onOptionsItemSelected(item);
     }
 
-    //A helper method that displays a joke generated from the javaJokeGenerator library
+    //A helper method that displays a joke returned from the JokeAsyncTask
     public void tellJoke(View v) {
         new JokeAsyncTask(this).execute();
     }
